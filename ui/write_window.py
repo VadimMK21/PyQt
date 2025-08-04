@@ -179,12 +179,12 @@ class WriteRegistersWindow(QMainWindow):
             value_combo.addItems(["0", "1"])
             value_combo.setCurrentText(str(int(write_config.value)))
             self.write_table.setCellWidget(row, 4, value_combo)
-        #elif write_config.reg_type in ["I_Float", "I_Int"]:
-        #    value_spin = QDoubleSpinBox()
-        #    value_spin.setRange(-999999, 999999)
-        #    value_spin.setDecimals(0)
-        #    value_spin.setValue(write_config.value)
-        #    self.write_table.setCellWidget(row, 4, value_spin)
+        elif write_config.reg_type == "I_Int":
+            value_spin = QDoubleSpinBox()
+            value_spin.setRange(-999999, 999999)
+            value_spin.setDecimals(0)
+            value_spin.setValue(write_config.value)
+            self.write_table.setCellWidget(row, 4, value_spin)
         else:
             value_spin = QDoubleSpinBox()
             value_spin.setRange(-999999.999, 999999.999)
@@ -214,7 +214,7 @@ class WriteRegistersWindow(QMainWindow):
             value_combo.addItems(["0", "1"])
             value_combo.setCurrentText(str(int(current_value) if current_value else "0"))
             self.write_table.setCellWidget(row, 4, value_combo)
-        elif reg_type in ["I_Float", "I_Int"]:
+        elif reg_type =="I_Int":
             value_spin = QDoubleSpinBox()
             value_spin.setRange(-999999, 999999)
             value_spin.setDecimals(0)
@@ -377,7 +377,7 @@ class WriteRegistersWindow(QMainWindow):
                 
                 # Заполняем таблицу
                 for write_reg in self.write_registers:
-                    self.add_write_table_row(write_reg)
+                    self.add_write_table_row(write_reg)                
                 
                 QMessageBox.information(
                     self, "Успех",

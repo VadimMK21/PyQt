@@ -140,13 +140,13 @@ class ConfigFileManager:
                 for i in range(register_count):
                     section_name = f'WriteRegister_{i}'
                     if section_name in config:
-                        section = config[section_name]
+                        section = config[section_name] 
                         
                         write_reg = WriteRegisterConfig(
                             name=section.get('name', f'WriteReg_{i+1}'),
                             slave_id=int(section.get('slave_id', 1)),
                             address=int(section.get('address', 0)),
-                            reg_type=section.get('reg_type', 'Holding'),
+                            reg_type=section.get('reg_type', 'I_Float'),
                             value=float(section.get('value', 0))
                         )
                         

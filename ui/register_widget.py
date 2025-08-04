@@ -70,7 +70,7 @@ class RegisterWidget(QWidget):
         mode_layout = QHBoxLayout(mode_group)
         
         self.separate_radio = QCheckBox("Отдельные графики")
-        self.grouped_radio = QCheckBox("Группировать по группам")
+        self.grouped_radio = QCheckBox("Обьеденить по группам")
         self.separate_radio.setChecked(True)
         
         self.separate_radio.stateChanged.connect(self.on_mode_changed)
@@ -103,7 +103,7 @@ class RegisterWidget(QWidget):
         self.table = QTableWidget()
         self.table.setColumnCount(8)
         self.table.setHorizontalHeaderLabels([
-            "Вкл", "Имя", "ID", "Адрес", "Кол-во", "Тип", "Группа", "Цвет"
+            "Вкл", "Имя", "ID", "Адрес", "Сount", "Тип", "Группа", "Цвет"
         ])
         
         # Настройка заголовков таблицы

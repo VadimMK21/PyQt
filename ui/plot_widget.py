@@ -11,7 +11,7 @@ import numpy as np
 # Импорт библиотеки для создания графиков в PyQt
 import pyqtgraph as pg
 # Импорт основных виджетов PyQt5 для создания интерфейса
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QScrollArea, QFrame, QPushButton, QHBoxLayout
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QScrollArea, QFrame, QPushButton, QHBoxLayout, QSpinBox
 # Импорт константы выравнивания из PyQt5
 from PyQt5.QtCore import Qt
 
@@ -22,7 +22,7 @@ from config.register_config import RegisterConfig
 class PlotManager:
     """Менеджер графиков - основной класс для управления всеми графиками в приложении"""
     
-    def __init__(self, scroll_window_size: int = 600):
+    def __init__(self, scroll_window_size: int = 60):
         # Словарь для хранения информации о каждой кривой графика
         # Ключ - имя регистра, значение - словарь с информацией о графике
         self.plot_curves = {}  # Словарь кривых: {register_name: plot_info}
@@ -63,16 +63,16 @@ class PlotManager:
         # Подключаем обработчик переключения к методу переключения автопрокрутки
         self.auto_scroll_btn.clicked.connect(self.toggle_auto_scroll)
 
-        #### NEW!!!!!
-        # Кнопка для очистки всех графиков
-        self.clear_plots_btn = QPushButton("Очистить графики")
-        # Подключаем обработчик нажатия кнопки к методу очистки графиков
-        self.clear_plots_btn.clicked.connect(self.clear_all_plots)
+        self.interval_auto_scroll = QSpinBox()
+        self.interval_auto_scroll.setRange(1, 600)
+        self.interval_auto_scroll.setValue(60)
+        self.interval_auto_scroll.setSuffix(" сек")
+        self.interval_auto_scroll.setToolTip("Интервал автоматической прокрутки в секундах")
         
         # Добавляем кнопки в горизонтальный макет
         controls_layout.addWidget(self.reset_zoom_btn)
         controls_layout.addWidget(self.auto_scroll_btn)
-        controls_layout.addWidget(self.clear_plots_btn)
+        controls_layout.addWidget(self.interval_auto_scroll)
         # Добавляем растягивающийся элемент для выравнивания кнопок по левому краю
         controls_layout.addStretch()
         
@@ -279,13 +279,15 @@ class PlotManager:
                 # Вычисляем относительное время
                 time_array = np.array(reg_config.time_data)
                 time_relative = time_array - time_array[0]
+
+                plot_widget.autoRange()
                 
                 # Устанавливаем диапазон отображения на весь период данных
-                plot_widget.setXRange(time_relative[0], time_relative[-1])
+                ##plot_widget.setXRange(time_relative[0], time_relative[-1])
                 # Включаем автоматическое масштабирование по Y
-                plot_widget.enableAutoRange(axis='y')
+                ##plot_widget.enableAutoRange(axis='y')
                 # Отключаем автоматическое масштабирование по X (управляем вручную)
-                plot_widget.disableAutoRange(axis='x')
+                ##plot_widget.disableAutoRange(axis='x')
             else:
                 # Если данных нет, устанавливаем стандартный диапазон
                 plot_widget.setXRange(0, 1)
@@ -296,9 +298,11 @@ class PlotManager:
         # Проверяем состояние кнопки и обновляем текст
         if self.auto_scroll_btn.isChecked():
             self.auto_scroll_btn.setText("Авто-прокрутка: ВКЛ")
+            self.set_scroll_window_size(int(self.interval_auto_scroll.value()))
+            #self.scroll_window_size = int(self.interval_auto_scroll.value())
         else:
             self.auto_scroll_btn.setText("Авто-прокрутка: ВЫКЛ")
-    
+                
     def set_scroll_window_size(self, size: int):
         """Устанавливает размер окна прокрутки в секундах"""
         self.scroll_window_size = size

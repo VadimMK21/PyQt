@@ -28,7 +28,8 @@ except ImportError as e:
     sys.exit(1)
 
 
-QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
 
 def setup_application():
     """Настройка приложения"""
@@ -46,7 +47,7 @@ def setup_application():
     
     # Настройка высокого DPI
     #app.setAttribute(Qt.AA_EnableHighDpiScaling, True)
-    app.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
+    #app.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
     
     return app
 
